@@ -1,5 +1,5 @@
 <meta charset=utf-8>
-<a href=//github.com/xem/MiniRegexTester><img style="position:absolute;top:0;right:0;border:0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<a href=//github.com/xem/MiniShadertoy><img style="position:absolute;top:0;right:0;border:0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 <title>MiniShadertoy</title>
 <font face=arial>
 <center>
@@ -28,11 +28,14 @@ void main(){
 // - https://www.shadertoy.com/new
 // - http://elias.media/js1k16-post-mortem/
 
+// Read hash
+h=location.hash;
+if(h){
+  t.value=atob(h.slice(1));
+}
+
 // Get canvas WebGL context
 g=a.getContext("webgl");
-
-// setInterval handle
-s=0;
 
 // Mouse coordinates
 N=O=0;
@@ -40,7 +43,8 @@ N=O=0;
 // Onload / oninput
 (oninput=function(){
 
-  clearInterval(s);
+  // Write hash
+  location.hash=btoa(t.value);
 
   // Define a new program
   P=g.createProgram();
