@@ -16,8 +16,8 @@ Shortcuts:
 Commented version:
 http://xem.github.io/MiniShadertoy
 
-Golfed (868b)
+Golfed (827b)
 http://xem.github.io/MiniShadertoy/index.min.html
 
-Packed (753b)
+Packed (749b)
 http://xem.github.io/MiniShadertoy/index.min.pack.html
