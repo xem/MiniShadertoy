@@ -3,8 +3,11 @@ MiniShadertoy
 
 A tiny webGL shader playground
 
-Shader inputs (for now):
-- T: global time
+Shader inputs:
+- T: playback time (seconds)
+- R: viewport resolution (px, px)
+- M: mouse coordinates (px, px)
+- F: current playback frame (int)
 
 Commented version:
 http://xem.github.io/MiniShadertoy

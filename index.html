@@ -1,12 +1,111 @@
 <meta charset=utf-8>
-<canvas id=a width=640 height=360 style="border: 1px solid"></canvas>
-<textarea id=t cols=60 rows=22 spellcheck=false>void main(){
-  vec2 reso = vec2(640.0,360.0);
-  vec2 uv=gl_FragCoord.xy / reso.xy;
-  gl_FragColor=vec4(uv,0.5+0.5*sin(T),1.0);
-}</textarea>
+<a href=//github.com/xem/MiniRegexTester><img style="position:absolute;top:0;right:0;border:0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<title>MiniShadertoy</title>
+<font face=arial>
+<center>
+<h1>MiniShadertoy</h1>
+<h3>A <a href=index.min.html>code-golfed</a> WebGL shader playground</h3>
+<br>
+<br>
+(T: playback time / R: viewport resolution / M: mouse coordinates / F: current playback frame)
+<br>
+<br>
+<!-- golf starts here -->
 
-<button id=b>run</button>
+<textarea id=t cols=60 rows=22 spellcheck=false>// DEMO
+void main(){
+  gl_FragColor=vec4(
+    (gl_FragCoord.x-M.x/10.0)/R.x,
+    (gl_FragCoord.y+M.y/10.0)/R.y,
+    0.5+0.5*sin(T),
+    0.5+1.0/F/10.0
+  );
+}</textarea>
+<canvas id=a width=640 height=360 style="border: 1px solid">
+
+<script>
+// Inspired by:
+// - https://www.shadertoy.com/new
+// - http://elias.media/js1k16-post-mortem/
+
+// Get canvas WebGL context
+g=a.getContext("webgl");
+
+// setInterval handle
+s=0;
+
+// Mouse coordinates
+N=O=0;
+
+// Onload / oninput
+(oninput=function(){
+
+  clearInterval(s);
+
+  // Define a new program
+  P=g.createProgram();
+
+  // Basic vertex shader
+  g.shaderSource(S=g.createShader(g.VERTEX_SHADER),"attribute vec2 P;void main(){gl_Position=vec4(P,0,1);}");
+
+  // Compile and attach it to the program
+  g.compileShader(S);
+  g.attachShader(P,S);
+
+  // Main program
+  g.shaderSource(S=g.createShader(g.FRAGMENT_SHADER),"precision mediump float;uniform float T,F;uniform vec2 R,M;"+t.value);
+
+  // Compile and attach it to the program
+  g.compileShader(S);
+  g.attachShader(P,S);
+
+  // Link and start the program
+  g.linkProgram(P);
+  g.useProgram(P);
+
+  // Define a big triangle the canvas, containing the viewport
+  g.bindBuffer(B=g.ARRAY_BUFFER,g.createBuffer());
+  g.enableVertexAttribArray(0);
+  g.vertexAttribPointer(0,2,g.BYTE,0,0,0);
+  g.bufferData(B,new Int8Array([-3,1,1,-3,1,1]),g.STATIC_DRAW);
+
+  // Main loop
+  T=0;
+  F=0;
+})();
+
+// Main loop
+(L=function(){
+  // Current playback time
+  g.uniform1f(g.getUniformLocation(P,"T"),T+=.016);
+  
+  // Current playback frame
+  g.uniform1f(g.getUniformLocation(P,"F"),F++);
+  
+  // Mouse coordinates
+  g.uniform2f(g.getUniformLocation(P,"M"),N,O);
+  
+  // Viewport resolution
+  g.uniform2f(g.getUniformLocation(P,"R"),640,360);
+  
+  g.drawArrays(g.TRIANGLE_FAN,0,3);
+  
+  requestAnimationFrame(L);
+})();
+
+// Mouse coordinates
+a.onmousemove=function(e){
+  N=e.pageX-(z=a.getBoundingClientRect()).top;
+  O=e.pageY-z.left;
+};
+</script>
+
+<!-- golf ends here -->
+
+</canvas>
+<br>
+<br>
+<b>©2016 - xem, subzey, aemkei, p01, elias_schuett</b>
 
 <!-- romanesco 2.0's tetrahedron
 float t=5e-3;
@@ -34,52 +133,3 @@ void main(){
   }
 }
 -->
-
-<script>
-
-// Inspired by:
-// - https://www.shadertoy.com/new
-// - http://elias.media/js1k16-post-mortem/
-
-// setInterval handle
-s=0;
-
-onload=b.onclick=function(){
-
-  clearInterval(s);
-  
-  // Get canvas WebGL context
-  g=a.getContext("webgl");
-
-  // Define a new program
-  P=g.createProgram();
-
-  // Basic vertex shader
-  g.shaderSource(T=g.createShader(g.VERTEX_SHADER),"attribute vec2 P;void main(){gl_Position=vec4(P,0,1);}");
-
-  // Compile and attach it to the program
-  g.compileShader(T);
-  g.attachShader(P,T);
-
-  // Main program
-  g.shaderSource(T=g.createShader(g.FRAGMENT_SHADER),"precision mediump float;uniform float T;"+t.value);
-
-  // Compile and attach it to the program
-  g.compileShader(T);
-  g.attachShader(P,T);
-
-  // Link and start the program
-  g.linkProgram(P);
-  g.useProgram(P);
-
-  // Define a big triangle the canvas, containing the viewport
-  g.bindBuffer(T=g.ARRAY_BUFFER,g.createBuffer());
-  g.enableVertexAttribArray(0);
-  g.vertexAttribPointer(0,2,g.BYTE,0,0,0);
-  g.bufferData(T,new Int8Array([-3,1,1,-3,1,1]),g.STATIC_DRAW);
-
-  // Main loop (Update the time constant "T" and redraw the triangle at each frame)
-  T=0;
-  s=setInterval('g.uniform1f(g.getUniformLocation(P,"T"),T+=.01);g.drawArrays(g.TRIANGLE_FAN,0,3)',16);
-}
-</script>
