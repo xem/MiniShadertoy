@@ -7,7 +7,7 @@
 <h3>A <a href=index.min.html>code-golfed</a> WebGL shader playground</h3>
 <br>
 <br>
-(T: playback time / R: viewport resolution / M: mouse coordinates / F: current playback frame)
+(T: playback time / R: viewport resolution / M: mouse coordinates / F: current playback frame / C: gl_FragColor, D: gl_FragCoord)
 <br>
 <br>
 <!-- golf starts here -->
@@ -53,7 +53,7 @@ N=O=0;
   g.attachShader(P,S);
 
   // Main program
-  g.shaderSource(S=g.createShader(g.FRAGMENT_SHADER),"precision mediump float;uniform float T,F;uniform vec2 R,M;"+t.value);
+  g.shaderSource(S=g.createShader(g.FRAGMENT_SHADER),"precision mediump float;uniform float T,F;uniform vec2 R,M;"+t.value.replace(/\bC\b/g,"gl_FragColor").replace(/\bD\b/g,"gl_FragCoord"));
 
   // Compile and attach it to the program
   g.compileShader(S);
@@ -98,6 +98,14 @@ a.onmousemove=function(e){
   N=e.pageX-(z=a.getBoundingClientRect()).top;
   O=e.pageY-z.left;
 };
+
+// Constants:
+// 35633 = g.VERTEX_SHADER
+// 35632 = g.FRAGMENT_SHADER
+// 35044 = g.STATIC_DRAW
+// 34962 = g.ARRAY_BUFFER
+//  5120 = g.BYTE
+//     6 = g.TRIANGLE_FAN
 </script>
 
 <!-- golf ends here -->
