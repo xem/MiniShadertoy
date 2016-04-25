@@ -92,16 +92,6 @@ M=[0,0];
   
   // Sound
   eval(s.value);
-  
-  A = new AudioContext();
-  w = A.createScriptProcessor(4096,1,1);
-  w.connect(A.destination);
-  w.onaudioprocess=function(e){
-    q=e.outputBuffer.getChannelData(0);
-    for(i=0;i<4096;i++){
-      q[i]=f();
-    }
-  }
 })();
 
 // Main loop
@@ -131,6 +121,16 @@ a.onmousemove=function(e){
   M[1]=e.pageY-z.left;
 };
 
+// Sound
+A = new AudioContext();
+w = A.createScriptProcessor(4096,1,1);
+w.connect(A.destination);
+w.onaudioprocess=function(e){
+  q=e.outputBuffer.getChannelData(0);
+  for(i=0;i<4096;i++){
+    q[i]=f();
+  }
+}
 
 
 // Constants:
