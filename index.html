@@ -1,5 +1,5 @@
 <meta charset=utf-8>
-<a href=//github.com/xem/MiniShadertoy><img style="position:absolute;top:0;right:0;border:0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<!--a href=//github.com/xem/MiniShadertoy><img style="position:absolute;top:0;right:0;border:0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a-->
 <title>MiniShadertoy</title>
 <font face=arial>
 <center>
@@ -12,7 +12,8 @@
 <br>
 <!-- golf starts here -->
 
-<textarea id=t cols=60 rows=22 spellcheck=false>// DEMO
+<textarea id=t cols=30 rows=22 spellcheck=false>// SHADER (OpenGL)
+
 void main(){
   C=vec4(
     (gl_FragCoord.x-M.x/10.0)/R.x,
@@ -20,6 +21,14 @@ void main(){
     0.5+0.5*sin(T),
     0.5+1.0/F/10.0
   );
+}</textarea>
+<textarea id=s cols=30 rows=22 spellcheck=false>// SOUND (JS)
+c=0;
+f=function(){
+  c++;
+  return Math.sin(
+    (c%4000)*T
+  )/500;
 }</textarea>
 <canvas id=a width=640 height=360 style="border: 1px solid">
 
@@ -31,20 +40,22 @@ void main(){
 // Read hash
 h=location.hash;
 if(h){
-  t.value=atob(h.slice(1));
+  l=h.slice(1).split(".");
+  t.value=atob(l[0]);
+  s.value=atob(l[1]);
 }
 
 // Get canvas WebGL context
 g=a.getContext("webgl");
 
 // Mouse coordinates
-N=O=0;
+M=[0,0];
 
 // Onload / oninput
 (oninput=function(){
 
   // Write hash
-  location.hash=btoa(t.value);
+  location.hash=btoa(t.value)+"."+btoa(s.value);
 
   // Define a new program
   P=g.createProgram();
@@ -76,6 +87,19 @@ N=O=0;
   // Main loop
   T=0;
   F=0;
+  
+  // Sound
+  eval(s.value);
+  
+  A = new AudioContext();
+  w = A.createScriptProcessor(4096,1,1);
+  w.connect(A.destination);
+  w.onaudioprocess=function(e){
+    q=e.outputBuffer.getChannelData(0);
+    for(i=4096;i--;){
+      q[i]=f();
+    }
+  }
 })();
 
 // Main loop
@@ -87,21 +111,25 @@ N=O=0;
   g.uniform1f(g.getUniformLocation(P,"F"),F++);
   
   // Mouse coordinates
-  g.uniform2f(g.getUniformLocation(P,"M"),N,O);
+  g.uniform2f(g.getUniformLocation(P,"M"),M[0],M[1]);
   
   // Viewport resolution
   g.uniform2f(g.getUniformLocation(P,"R"),640,360);
   
+  // Draw
   g.drawArrays(g.TRIANGLE_FAN,0,3);
   
+  // Next frame
   requestAnimationFrame(L);
 })();
 
 // Mouse coordinates
 a.onmousemove=function(e){
-  N=e.pageX-(z=a.getBoundingClientRect()).top;
-  O=e.pageY-z.left;
+  M[0]=e.pageX-(z=a.getBoundingClientRect()).top;
+  M[1]=e.pageY-z.left;
 };
+
+
 
 // Constants:
 // 35633 = g.VERTEX_SHADER
@@ -110,6 +138,8 @@ a.onmousemove=function(e){
 // 34962 = g.ARRAY_BUFFER
 //  5120 = g.BYTE
 //     6 = g.TRIANGLE_FAN
+
+
 </script>
 
 <!-- golf ends here -->
@@ -117,7 +147,7 @@ a.onmousemove=function(e){
 </canvas>
 <br>
 <br>
-<b>©2016 - xem, subzey, aemkei, p01, elias_schuett</b>
+<b>©2016 - xem, subzey, aemkei, p01, elias_schuett, sqaxomonophonen</b>
 
 <!-- romanesco 2.0's tetrahedron
 float t=5e-3;
