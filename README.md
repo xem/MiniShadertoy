@@ -3,17 +3,7 @@ MiniShadertoy
 
 A tiny webGL shader playground
 
-Shader inputs:
-- T: playback time
-- R: viewport resolution
-- M: mouse coordinates
-- F: current playback frame
-
-Shortcuts:
-- C: gl_FragColor
-- D: gl_FragCoords
-
-Commented version:
+Website + Commented code:
 http://xem.github.io/MiniShadertoy
 
 Golfed (1175b)
@@ -21,3 +11,6 @@ http://xem.github.io/MiniShadertoy/index.min.html
 
 Packed (1010b)
 http://xem.github.io/MiniShadertoy/index.min.pack.html
+
+
+(see also the lite version http://xem.github.io/MiniShadertoyLite)
