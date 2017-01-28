@@ -1,8 +1,10 @@
 <!doctype html>
 <meta charset=utf-8>
 <body id=b>
+<canvas id=a width=640 height=360>
 <script>
 d = document;
+g = a.getContext('webgl');
 
 /*
 =========================
@@ -46,7 +48,7 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord){
 
 
 // GUI: canvas
-b.innerHTML+=`<canvas id=a width=600 height=400 style='border:1px solid#000;width:47vw;height:95vh'>`;
+a.style="width:47vw;height:95vh";
 
 // GUI: textarea with demo shader
 b.innerHTML+=`<textarea id=c style=width:47vw;height:95vh>void mainImage(out vec4 fragColor,in vec2 fragCoord){
