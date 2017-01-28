@@ -42,38 +42,42 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord){
   // code
 }
 
-~~~
-
-Commented source:
-
-
-/*
-Useful constants:
-35633 = g.VERTEX_SHADER
-35632 = g.FRAGMENT_SHADER
-35044 = g.STATIC_DRAW
-34962 = g.ARRAY_BUFFER
-5120 = g.BYTE
-6 = g.TRIANGLE_FAN
 */
 
-/* Golf starts here */
 
-// GUI:
-// Canvas
+// GUI: canvas
 b.innerHTML+=`<canvas id=a width=600 height=400 style='border:1px solid#000;width:47vw;height:95vh'>`;
 
-// Textarea with demo shader
-b.innerHTML+=`<textarea id=c style='width:47vw;height:95vh' spellcheck=false>void mainImage(out vec4 fragColor,in vec2 fragCoord){
+// GUI: textarea with demo shader
+b.innerHTML+=`<textarea id=c style=width:47vw;height:95vh>void mainImage(out vec4 fragColor,in vec2 fragCoord){
   vec4 p=vec4((fragCoord.xy/iResolution.xy-.5)*2.,0,1);
   fragColor=p+sin(atan(p.y,p.x)*9.)*sin(p*iGlobalTime/2.+9./dot(p,p)+iGlobalTime*5.);
 }`;
 
+// Canvas methods hashing:
+// This loop creates tiny shortcuts for all the webgl context's methods/constants we need:
+// createProgram => cP
+// shaderSource => sS
+// createShader => cS
+// compileShader => ce
+// attachShader => aS
+// linkProgram => lo
+// useProgram => ug
+// bindBuffer => bf
+// createBuffer => cB
+// enableVertexAttribArray => eV
+// vertexAttribPointer => vA
+// bufferData => bD
+// getUniformLocation => gf
+// drawArrays => dr
+// NO_ERROR => NO (value = 0)
+// FRAGMENT_SHADER => FN (value: 35632)
+// ELEMENT_ARRAY_BUFFER_BINDING => ET (value: 34965)
+for(i in g=a.getContext("webgl")){
+  g[i[0]+i[6]]=g[i];
+}
 
-// WebGL context
-g = a.getContext("webgl");
-
-// Read hash
+// Fill the textarea if the hash is set, decoded from base64
 if(l=location.hash){
   c.value=atob(l.slice(1));
 }
@@ -81,93 +85,133 @@ if(l=location.hash){
 // Mouse coordinates
 iMouse=[0,0,0,0];
 
-// Onload / oninput
-(oninput=function(){
+// Use the WebGL context's scope for all the following code
+with(g){
 
-  // Update hash
-  //location.hash=btoa(c.value);
+  // Onload / oninput
+  (oninput=function(){
 
-  // Define a new program
-  P=g.createProgram();
+    // Update hash with shader code in base64
+    location.hash=btoa(c.value);
 
-  // Basic vertex shader
-  g.shaderSource(S=g.createShader(g.VERTEX_SHADER),"attribute vec2 P;void main(){gl_Position=vec4(P,0,1);}");
+    // Define a new program
+    // P=createProgram();
+    P=cP();
 
-  // Compile and attach it to the program
-  g.compileShader(S);
-  g.attachShader(P,S);
+    // Basic vertex shader
+    // shaderSource(S=createShader(VERTEX_SHADER),"attribute vec2 P;void main(){gl_Position=vec4(P,0,1);}");
+    sS(S=cS(35633),"attribute vec2 P;void main(){gl_Position=vec4(P,0,1);}");
 
-  // Main program
-  g.shaderSource(S=g.createShader(g.FRAGMENT_SHADER),`precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;varying lowp vec4 fragCoord;uniform vec2 iResolution;uniform vec4 iMouse;` + c.value + `void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}`);
+    // Compile and attach it to the program
+    // compileShader(S);
+    ce(S);
+    
+    //attachShader(P,S);
+    aS(P,S);
 
-  // Compile and attach it to the program
-  g.compileShader(S);
-  g.attachShader(P,S);
+    // Main program
+    // shaderSource(S=createShader(FRAGMENT_SHADER),'precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;varying lowp vec4 fragCoord;uniform vec2 iResolution;uniform vec4 iMouse;' +c.value+'void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}');
+    sS(S=cS(FN),'precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;varying lowp vec4 fragCoord;uniform vec2 iResolution;uniform vec4 iMouse;'+c.value+'void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}');
 
-  // Link and start the program
-  g.linkProgram(P);
-  g.useProgram(P);
+    // Compile and attach it to the program
+    // compileShader(S);
+    ce(S);
+    
+    // attachShader(P,S);
+    aS(P,S);
 
-  // Define a big triangle the canvas, containing the viewport
-  g.bindBuffer(B=g.ARRAY_BUFFER,g.createBuffer());
-  g.enableVertexAttribArray(0);
-  g.vertexAttribPointer(0,2,g.BYTE,0,0,0);
-  g.bufferData(B,new Int8Array([-3,1,1,-3,1,1]),g.STATIC_DRAW);
+    // Link and start the program
+    //linkProgram(P);
+    lo(P);
+    
+    //useProgram(P);
+    ug(P);
 
-  // Frame
-  iFrame=0;
+    // Define a big triangle the canvas, containing the viewport
+    // bindBuffer(B=ARRAY_BUFFER, createBuffer());
+    bf(B=34962,cB());
+    
+    // enableVertexAttribArray(0);
+    eV(0);
+    
+    // vertexAttribPointer(0, 2, BYTE, 0, 0, 0);
+    vA(0,2,5120,0,0,0);
+    
+    // bufferData(B,new Int8Array([-3, 1, 1, -3, 1, 1]), STATIC_DRAW);
+    bD(B,new Int8Array([-3,1,1,-3,1,1]),35044);
 
-  // Playback time (in seconds)
-  p = 0;
-  
-  // Date (in seconds)
-  D = new Date() / 1000
-  
-  // Time delta (in seconds)
-  d = 0;
-})();
+    // Reset frame counter
+    iFrame=0;
+
+    // Reset playback time (in seconds)
+    p=0;
+    
+    // Date (in seconds)
+    D=new Date()/1e3
+    
+    // Time delta (in seconds)
+    d=0;
+  })();
 
 
 
-// Main loop
-(L=function(){
+  // Main loop
+  (L=function(){
 
-  // Time delta since last frame (in seconds)
-  d = (new Date() / 1000 - D);
+    // Time delta since last frame (in seconds)
+    d=(new Date()/1e3-D);
 
-  // Date (in seconds)
-  D = new Date() / 1000;
-  
-  g.uniform1f(g.getUniformLocation(P,"iTimeDelta"), d);
+    // Date (in seconds)
+    D=new Date()/1e3;
+    
+    // uniform1f(getUniformLocation(P, "iTimeDelta"), d);
+    uniform1f(gf(P,"iTimeDelta"),d);
 
-  // Current playback time (in seconds)
-  g.uniform1f(g.getUniformLocation(P,"iGlobalTime"), p += d);
-  
-  // Current playback frame
-  g.uniform1f(g.getUniformLocation(P,"iFrame"),iFrame++);  
-  
-  // Date
-  g.uniform1f(g.getUniformLocation(P,"iDate"), ~~D);
-  
-  // Mouse coordinates
-  g.uniform4f(g.getUniformLocation(P,"iMouse"),iMouse[0],iMouse[1],iMouse[2],iMouse[3]);
-  
-  // Viewport resolution
-  g.uniform2f(g.getUniformLocation(P,"iResolution"),640, 360);
-  
-  // Draw
-  g.drawArrays(g.TRIANGLE_FAN,0,3);
-  
-  // Next frame
-  requestAnimationFrame(L);
-})();
+    // Current playback time (in seconds)
+    // uniform1f(getUniformLocation(P,"iGlobalTime"), p += d);
+    uniform1f(gf(P,"iGlobalTime"),p+=d);
+    
+    // Current playback frame
+    // uniform1f(getUniformLocation(P,"iFrame"),iFrame++);  
+    uniform1f(gf(P,"iFrame"),iFrame++);  
+    
+    // Date
+    // uniform1f(getUniformLocation(P,"iDate"), ~~D);
+    uniform1f(gf(P,"iDate"),~~D);
+    
+    // Mouse coordinates
+    // uniform4f(getUniformLocation(P,"iMouse"),iMouse[0],iMouse[1],iMouse[2],iMouse[3]);
+    uniform4f(gf(P,"iMouse"),iMouse[0],iMouse[1],iMouse[2],iMouse[3]);
+    
+    // Viewport resolution
+    // uniform2f(gf(P,"iResolution"), 640, 360);
+    uniform2f(getUniformLocation(P,"iResolution"),640,360);
+    
+    // Draw
+    // drawArrays(TRIANGLE_FAN,0,3);
+    dr(6,0,3);
+    
+    // Next frame
+    requestAnimationFrame(L);
+  })();
+}
 
-// Mouse input
+// Mouse input:
+
+// y: mouse down (0 / 1)
 y=0;
+
+// z: canvas size (1: half / 2: full screen)
 z=1;
+
+// Toggle y on mouse down / up
 onmousedown=onmouseup=function(e){y^=1}
+
+// Update iMouse on mouse move / click, according to z.
 a.onmousemove=function(e){if(y)iMouse[0]=e.pageX*0.47*z,iMouse[1]=e.pageY}
 a.onclick=function(e){iMouse[2]=e.pageX*0.47*z,iMouse[3]=e.pageY}
+
+// On double click, toggle canvas size
 a.ondblclick=function(e){z=3-z;a.style.width=c.style.width=z*47+'vw'}
 
 /* End of golf */
