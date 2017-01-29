@@ -41,21 +41,27 @@ DONE: ET-3
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),P=cP(),(A=s=>sS(S=cS(FN++),s)+ce(S)+aS(P,S))(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),vA(A(`attribute vec4 P${V}Position=p=P;}`),2,5120,lo(P),ug(P),eV(bf(B=ET-3,cB()))),bD(B,Int8Array.of(-3,1,1,-3,1,1),B+82))'>
 
 // Step 13: move `A` declaration into `cP()`
+// DONE
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),P=cP(A=s=>sS(S=cS(FN++),s)+ce(S)+aS(P,S)),A(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),vA(A(`attribute vec4 P${V}Position=p=P;}`),2,5120,lo(P),ug(P),eV(bf(B=ET-3,cB()))),bD(B,Int8Array.of(-3,1,1,-3,1,1),B+82))'>
 
 // Step 14: move `vA`, replace the ones in `Int8Array.of()` with neighbor functions
+// DONE
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),!vA(P=cP(A=s=>sS(S=cS(FN++),s)+ce(S)+aS(P,S)),2,5120,A(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),eV(bf(B=ET-3,cB())),bD(B,Int8Array.of(-3,1,!A(`attribute vec4 P${V}Position=p=P;}`),-3,!lo(P),!ug(P)),B+82)))'>
 
 // Step 15: move `vA(P=cP(...))` around the `setInterval`
+// NOPE
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)vA(P=cP(setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),A=s=>sS(S=cS(FN++),s)+ce(S)+aS(P,S))),2,5120,A(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),eV(bf(B=ET-3,cB())),bD(B,Int8Array.of(-3,1,!A(`attribute vec4 P${V}Position=p=P;}`),-3,!lo(P),!ug(P)),B+82))'>
 
 // Step 16: change the Int8Array's vertices to `3,-1,-1,3,-1,-1` and use `~` to turn `null` into `-1`
+// DONE
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)vA(P=cP(setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),A=s=>sS(S=cS(FN++),s)+ce(S)+aS(P,S))),2,5120,A(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),eV(bf(B=ET-3,cB())),bD(B,Int8Array.of(3,-1,~A(`attribute vec4 P${V}Position=p=P;}`),3,~lo(P),~ug(P)),B+82))'>
 
 // Step 17: Make `A()` always return `-1`
+// DONE
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)vA(P=cP(setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),A=s=>sS(S=cS(FN++),s)|ce(S)|~aS(P,S))),2,5120,0,eV(bf(B=ET-3,cB())),bD(B,Int8Array.of(3,A(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),A(`attribute vec4 P${V}Position=p=P;}`),3,~lo(P),~ug(P)),B+82))'>
 
 // Step 18: change the shape of the triangle, using the return value of `setInterval` (usually between 1 and 127) as first param of `Int8Array`
+// ...
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)vA(P=cP(),2,5120,bD(B=ET-3,Int8Array.of(B,setInterval(x=>dr(6,uniform1f(gf(P,"t"),NO++),3),A=s=>sS(S=cS(FN++),s)|ce(S)|aS(P,S)),!A(`uniform lowp float t${V=";varying lowp vec4 p;void main(){gl_"}FragColor=[SHADER]}`),B,!eV(bf(B,cB())),!A(`attribute vec4 P${V}Position=p=P;}`)),B+82),lo(P),ug(P))'>
 
 // Step 19: introduce C and T as attributes, set `t.x=T.x`, and use `vA` (vertexAttrib1f) instead of `uniform1f`
