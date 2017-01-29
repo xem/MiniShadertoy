@@ -72,6 +72,6 @@ DONE: ET-3
 // Step 23: Rearrange `Int8Array.of()` arguments to place `!eV()` first, anc move `V` declaration into `cb()`
 
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)vA(P=cP(setInterval(x=>dr(6,vertexAttrib1f(1,NO++),3),A=s=>sS(S=cS(FN++),s)|ce(S)|!aS(P,S))),2,5120,bD(B=ET-3,Int8Array.of(!eV(bf(B,cB(V="varying lowp vec4 p,t;void main(){gl_"))),B,A(V+`FragColor=[SHADER]}`),A(`attribute vec4 P,T;${V}Position=p=P;t=T;}`)),B+82),!lo(P),ug(P))'>
-// Step 24: use the svg's id (which is an empty string)
 
+// Step 24: use the svg's id (which is an empty string)
 <canvas id=a><svg onload='for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)vA(P=cP(setInterval(x=>dr(6,vertexAttrib1f(1,NO++),3),A=s=>sS(S=cS(FN++),id+"varying lowp vec4 p,t;void main(){gl_"+s)|ce(S)|!aS(P,S))),2,5120,bD(B=ET-3,Int8Array.of(A`FragColor=[SHADER]}`,B,!eV(bf(B,cB(id="attribute vec4 P,T;"))),A`Position=p=P;t=T;}`),B+82),!lo(P),ug(P))'>
