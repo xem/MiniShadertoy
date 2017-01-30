@@ -131,8 +131,8 @@ with(g){
     uniform4f(gf(p,"iMouse"),iMouse[0],iMouse[1],iMouse[2],iMouse[3]);
     
     // Viewport resolution
-    // uniform2f(gf(p,"iResolution"), 640, 360);
-    uniform2f(getUniformLocation(p,"iResolution"),640,360);
+    // uniform2f(getUniformLocation(p,"iResolution"),640,360);
+    uniform2f(gf(p,"iResolution"), 640, 360);
     
     // Draw
     // drawArrays(TRIANGLE_FAN,0,3);

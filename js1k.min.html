@@ -1,14 +1,14 @@
 <!doctype html>
 <meta charset=utf-8>
 <body id=b>
-<canvas id=a width=640 height=360>
+<canvas id=a width=1000 height=1000>
 <script>
 d = document;
 g = a.getContext('webgl');
 
 /* Golf starts here */
 
-b.innerHTML+=`<textarea id=c>`+(atob(top.location.hash.slice(y=z=1))||`// WebGL playground!\nvoid mainImage(out vec4 color,vec2 coord){\n  vec4 p=vec4((coord/iResolution-.5)*2.,0,1);\n  color=p+sin(atan(p.y,p.x)*9.)*sin(p*iGlobalTime/2.+9./dot(p,p)+iGlobalTime*5.);\n}`);for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)(oninput=e=>{top.location.hash=btoa(c.value),h=FN,vA(p=cP(i=e=>sS(s=cS(h++),e)|ce(s)|!aS(p,s)),2,5120,bD(n=ET-3,Int8Array.of(i(`precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;uniform vec2 iResolution;uniform vec4 iMouse;`+c.value+`void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}`),n,!eV(bf(n,cB(m=[o=j=d=0]))),i`attribute vec4 p;void main(){gl_Position=p;}`),n+82),!lo(p),ug(p)),f=new Date/1e3})(a.onmousemove=e=>y||([m[0],m[1]]=[e.pageX*z/2,e.pageY])),(l=e=>{uniform1f(gf(p,`iTimeDelta`),d=new Date/1e3-f),uniform1f(gf(p,`iDate`),f=new Date/1e3),uniform1f(gf(p,`iGlobalTime`),o+=d),uniform4f(gf(p,`iMouse`),m[0],m[1],m[2],m[3]),uniform2f(getUniformLocation(p,`iResolution`),640,360),dr(6,uniform1f(gf(p,`iFrame`),j++),3),requestAnimationFrame(l)})(a.onclick=e=>[m[2],m[3]]=[e.pageX*z/2,e.pageY]);(a.ondblclick=e=>a.style=c.style=(b.style=`height:100vh;margin:0;box-sizing:border-box;width:`)+100/(z^=3)+`%;float:left`)(onmousedown=onmouseup=e=>y^=1)
+b.innerHTML+=`<textarea id=c>`+(atob(top.location.hash.slice(y=z=1))||`// WebGL playground!\nvoid mainImage(out vec4 color,vec2 coord){\n vec4 p=vec4((coord/iResolution-.5)*2.,0,1);\n color=p+sin(atan(p.y,p.x)*9.)*sin(p*iGlobalTime/2.+9./dot(p,p)+iGlobalTime*5.);\n}`);for(i in g=a.getContext`webgl`)g[i[0]+i[6]]=g[i];with(g)(oninput=e=>{top.location.hash=btoa(c.value),h=FN,vA(p=cP(i=e=>sS(s=cS(h++),e)|ce(s)|!aS(p,s)),2,5120,bD(n=ET-3,Int8Array.of(i(`precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;uniform vec2 iResolution;uniform vec4 iMouse;`+c.value+`void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}`),n,!eV(bf(n,cB(m=[o=j=d=0]))),i`attribute vec4 p;void main(){gl_Position=p;}`),n+82),!lo(p),ug(p)),f=new Date/1e3})(a.onmousemove=e=>y||([m[0],m[1]]=[e.pageX*z*1e3/innerWidth,e.pageY*1e3/innerHeight])),(l=e=>{uniform1f(gf(p,`iTimeDelta`),d=new Date/1e3-f),uniform1f(gf(p,`iDate`),f=new Date/1e3),uniform1f(gf(p,`iGlobalTime`),o+=d),uniform4f(gf(p,`iMouse`),m[0],m[1],m[2],m[3]),uniform2f(gf(p,`iResolution`),1e3,1e3),dr(6,uniform1f(gf(p,`iFrame`),j++),3),requestAnimationFrame(l)})(a.onclick=e=>[m[2],m[3]]=[e.pageX*z*1e3/innerWidth,e.pageY*1e3/innerHeight]);(a.ondblclick=e=>a.style=c.style=(b.style=`height:100vh;margin:0;box-sizing:border-box;width:`)+100/(z^=3)+`%;float:left`)(onmousedown=onmouseup=e=>y^=1)
 
 /* End of golf */
 
