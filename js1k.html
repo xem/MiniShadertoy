@@ -7,23 +7,21 @@ d = document;
 g = a.getContext('webgl');
 
 /*
-=========================
- WebGL Shader Playground
-=========================
+==================
+ WebGL Playground
+==================
 
-JS1k entry by The Codegolf Team (xem, LiterallyLara, nderscore, Subzey)
-Inspired by htp://www.shadertoy.com
-Based on http://xem.github.com/MiniShadertoy
-Full story on http://xem.github.io/articles/#webgl_quest
-Cheers to aemkei, p01 and sqaxomonophonen who also contributed to the original app.
+JS1k entry by The Codegolf Team (xem, literallyLara, nderscore, innovati, subzey)
+Inspired by Shadertoy: htp://www.shadertoy.com
+Full story here: http://xem.github.io/articles/#webgl_quest
 
 ~~~
 
-This demo provides a fully functional, mobile-friendly WebGL shader playground (canvas + textarea),
-with a built-in demo (made by LiterallyLara), mouse support, shareable URLs, and compatibility with Shadertoy:
+This demo provides a fully functional, mobile-friendly WebGL shader playground (canvas + live code editor),
+with a built-in demo (made by literallylara), mouse support, shareable URLs, and compatibility with Shadertoy:
 Demos created in this playground also work on Shadertoy,
 and Shadertoy's demos that only feature a shader (i.e. no channels or other assets) will also work here.
-(for example: https://www.shadertoy.com/view/Ms2SD1)
+(for example, https://www.shadertoy.com/view/Ms2SD1 can be played here, and the mouse inputs work too!)
 The canvas can also be set to fullscreen size by double-clicking it.
 
 ~~~
@@ -46,7 +44,7 @@ void mainImage(out vec4 color,in vec2 coord){
 ~~~
 
 The following commented code is very complex due to the extreme code-golfing required to make it fit in 1kb.
-For more readability, you can first read our first (ungolfed) version here: https://github.com/xem/MiniShadertoy/blob/gh-pages/ungolfed.js
+For more readability, you can first read our first (ungolfed) version here: https://github.com/xem/MiniShadertoy/blob/gh-pages/js1k.ungolfed.js
 
 ~~~
 
@@ -59,22 +57,26 @@ JS1K's shim gives the following vars for free:
 */
 
 // Add a textarea called "c" in the body.
-// Its content is either the hash of the top window (minus the leading "#") decoded from base64 if any, or the built-in demo.
-// y (mouse down flag) and z (fullscren flag) are initialized to 1.
+// Its content is either the hash of the top window (minus the leading "#") decoded from base64, if any, or the built-in demo.
+// y (mouse down flag) and z (fullscren flag) are initialized to "1" (i.e. "disabled").
 b.innerHTML+=`<textarea id=c>` +
 (
+
+  // Decoded hash
   atob(
     top.location.hash.slice(
       y = z = 1
     )
   )
   ||
+
+  // Or the demo (line breaks are written as "\n" for RegPack optimization)
   `// WebGL playground!\nvoid mainImage(out vec4 color,vec2 coord){\n vec4 p=vec4((coord/iResolution-.5)*2.,0,1);\n color=p+sin(atan(p.y,p.x)*9.)*sin(p*iGlobalTime/2.+9./dot(p,p)+iGlobalTime*5.);\n}`
 );
 
-// Redefine "g" as the canvas' WebGL context, because it was lost when we added the textarea.
-// Parenthesis can be omitted around teplate literals (more details: http://xem.github.io/articles/#webspeech)
-// Hash all the WebGL context methods and constants we'll need in this demo, to access them with only 2 letters:
+// Redefine "g" as the canvas' WebGL context (it was lost when we added the textarea in the DOM).
+// Parentheses can be omitted around teplate literals (more details: http://xem.github.io/articles/#webspeech)
+// All the WebGL context methods and constants we'll need in this demo are hashed in order to access them with only 2 letters:
 // createProgram => cP
 // shaderSource => sS
 // createShader => cS
@@ -95,73 +97,72 @@ for(i in g = a.getContext`webgl`){
   g[i[0] + i[6]] = g[i]
 }
 
-// Put "g" in the current scope to use any method / constant without having to write "g."
+// Put "g" in the current scope to use any method / constant without having to write "g.".
 with(g){
-
-  // Define the oninput function, called everytime the textarea is edited...
-  // NB: all the demo's function have a parameter called e to repeat "=e=>" and optimize RegPack compression
+  
+  // Define the oninput function, called every time the textarea is edited.
+  // (all the functions in this demo have a parameter called e to repeat "=e=>" and optimize RegPack compression)
   (
     oninput = e => {
 
-      // Update the main window's hash with the shader code in base64
+      // Update the main window's hash with the shader code in base64.
       top.location.hash = btoa(c.value),
 
-      // h = g.FRAGMENT_SHADER = 35632
-      h=FN,
+      // h = g.FRAGMENT_SHADER = 35632.
+      h = FN,
 
-      // Call g.vertexAttribPointer with the following params:
+      // Use g.vertexAttribPointer with the following params:
       // vertex_index = 0, components_per_vertex_attribute = 2, vertex_attributes_type = g.BYTE = 5120, normalized = 0, stride = 1, offset = 0.
       vA(
 
-        // Call g.createProgram to create the program p and return 0 as the 1st param of vA
+        // Use g.createProgram to create the program p and return 0 as the 1st param of vA.
         p = cP(
 
           // define the function i that takes a source string e...
-          i = e => {
+          i = e =>
 
-            // sets the shader's source (g.shaderSource)...
+            // ... sets the shader's source (g.shaderSource)...
             sS(
 
-              // with a new shader s (g.createShader), and increases h by 1 at the same time...
+              // ... with a new shader s (g.createShader), and increments h...
               s = cS(h++),
 
-              // and e.
+              // ... and e...
               e
             )
 
-            // (The following "|" and "!" are used to return 1 when i is called)
+            // (the following "|" and "!" are used to return "1" everytime i is called).
             |
 
-            // compiles the shader (g.compileShader)...
+            // ... then compiles the shader (g.compileShader)...
             ce(s)
 
             |
 
-            // and attaches the shader to p (g.attachShader).
+            // ... and attaches the shader to p (g.attachShader).
             !aS(p, s)
-          }
         ),
 
-        // 2nd param of vA
+        // 2nd param of vA.
         2,
 
-        // 3rd param of vA
+        // 3rd param of vA.
         5120,
 
-        // Fill bD (g.bufferData), and return 0 as the 4th param of vA
+        // Fill bD (g.bufferData), and return 0 as the 4th param of vA.
         bD(
 
           // Initialize n (the 1st param of bD) to g.ARRAY_BUFFER = 34962 = g.ELEMENT_ARRAY_BUFFER_BINDING - 3.
-          // we can't use g.ARRAY_BUFFER = g.AB as it's overwritten by another constant during hashing)
+          // we can't use g.AB directly as it's overwritten by another constant during hashing.
           n = ET - 3,
 
           // Set the coordinates of a big triangle surrounding the canvas (x1=1, y1=x2=B, y2=x3=1, y3=1) as the 2nd param of bD.
           // The coordinates overlap because the "stride" param of vA is set to 1.
-          // Int8Array.of(...) is the same as new Int8Array(...), just shorter. 
+          // "Int8Array.of(...)" is similar to "new Int8Array([...])", just shorter. 
           Int8Array.of(
 
-            // x1 = i(...) = 1.
             // We call i() a first time to define the fragment shader with the content of the textarea and the real main function (at this moment, g.FN = g.FRAGMENT_SHADER = 36532)
+            // it returns x1 = i(`...`) = 1.
             i(`precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;uniform vec2 iResolution;uniform vec4 iMouse;`
             +c.value
             +`void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}`),
@@ -181,18 +182,19 @@ with(g){
                 // g.createBuffer
                 cB(
 
-                  // Initialise m (iMouse). x is set to 0 as well as o (iGlobaltime), j (iFrame) and d (iTimeDelta)
+                  // Initialise m (iMouse). m[0] is set to 0 as well as o (iGlobaltime), j (iFrame) and d (iTimeDelta)
                   m = [o = j = d = 0]
                 )
               )
             ),
 
-            // y3 = A(Position=p=P;t=T;}) = 1. We call A() a second time to create the vertex shader (at this moment, n = 35633 = g.VERTEX_SHADER)
+            // We call A() a second time to create the vertex shader (at this moment, n = 35633 = g.VERTEX_SHADER)
+            // it returns y3 = i(`...`) = 1.
             i`attribute vec4 p;void main(){gl_Position=p;}`
           ),
 
           // 3rd param of bD: g.STATIC_DRAW = 35044 = 34962 + 82
-          // We can't use g.S_ as it's overwritten by another constant during hashing
+          // We can't use g.S_ as it was overwritten during hashing
           n + 82
         ),
 
@@ -202,6 +204,8 @@ with(g){
         // Use the program P (g.useProgram), return 0 as 6th param of vA
         ug(p)
       ),
+      
+      // Reset f (iDate)
       f = new Date / 1e3
     }
   )
@@ -210,15 +214,16 @@ with(g){
   (
 
     // The onmousemove function updates m[0] and m[1] (i.e. iMouse.xy) when the canvas is hovered and y=0 (when the left click is pressed)
-    // It's placed here in the oninput() to save space (no ";" at the end)
-    // The ES6 deconstruction ([a,b]=[c,d]) looks longer but it packs better.
-    // Coordinates are adjusted to be between 0 and 1000 (the canvas size)
+    // It's placed here in the oninput() call to save space (no ";" at the end)
+    // The ES6 deconstruction ([a,b]=[c,d]) looks longer than separate assignments but it packs better.
+    // Mouse coordinates are adjusted to be between 0 and 1000 (the canvas size)
     a.onmousemove = e => {
       y
       ||
       (
         [m[0], m[1]] = [e.pageX * z * 1e3 / innerWidth, e.pageY * 1e3 / innerHeight]
       )
+    }
   ),
 
   // Define the loop function "l"
@@ -238,7 +243,7 @@ with(g){
       // iMouse (mouse coords and click coords between 0 and 1000),
       uniform4f(gf(p, `iMouse`), m[0], m[1], m[2], m[3]),
 
-      // iResolution (always 1000x1000),
+      // iResolution (always 1000 x 1000),
       uniform2f(gf(p, `iResolution`), 1e3, 1e3),
 
       // and iFrame (incremented at each frame).
@@ -250,7 +255,7 @@ with(g){
         3
       ),
 
-      // Recursive call synced with the screen refresh rate
+      // Recursive call synced with the screen's refresh rate
       requestAnimationFrame(l)
     }
   )
@@ -295,8 +300,8 @@ with(g){
   }
 )
 
-// Minified: 1559b (see https://github.com/xem/MiniShadertoy/blob/gh-pages/js1k.min.html)
-// RegPacked with the settings: 2/1/0: 1024b (see https://github.com/xem/MiniShadertoy/blob/gh-pages/js1k.min.pack.html)
+// Minified: 1559b
+// RegPacked with the settings: 2/1/0: 1024b
 // Cheers!
 
 </script>
