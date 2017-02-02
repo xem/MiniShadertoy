@@ -1,15 +1,5 @@
-<!doctype html>
-<meta charset=utf-8>
-<body id=b>
-<canvas id=a width=1000 height=1000>
-<script>
-d = document;
-g = a.getContext('webgl');
+DESC:
 
-/*
-=====================
- JS1k Mini Shadertoy
-=====================
 
 Create WebGL shaders, share them via URLs, and see the result live! Inputs: iResolution, iGlobalTime, iTimeDelta, iFrame, iMouse, iDate. Double-click for fullscreen.
 
@@ -59,8 +49,21 @@ void mainImage(out vec4 C,vec2 P){
   for(int i=0;i<99;i++)z=mat2(z,-z.y,z.x)*z+c;
   C=sin(vec4(2,1,0,0)*dot(z,z)*7.);
 }
- 
-~~~
+
+
+
+
+
+
+
+
+
+
+
+
+SOURCE: 
+
+/*
 
 The following commented code is very complex due to the extreme code-golfing required to make it fit in 1kb.
 For more readability, you can first read our first (ungolfed) version here: https://github.com/xem/MiniShadertoy/blob/gh-pages/js1k.ungolfed.js
@@ -139,7 +142,6 @@ with(g){
         p = cP(
 
           // define the function i that takes a source string e...
-          // (statements are separated by "|" to avoid {braces})
           i = e =>
 
             // ... sets the shader's source (g.shaderSource)...
@@ -152,6 +154,7 @@ with(g){
               e
             )
 
+            // (the following "|" and "!" are used to return "1" everytime i is called).
             |
 
             // ... then compiles the shader (g.compileShader)...
@@ -160,7 +163,6 @@ with(g){
             |
 
             // ... and attaches the shader to p (g.attachShader).
-            // (the following "|" are used to return "1" everytime i is called).
             !aS(p, s)
         ),
 
@@ -177,18 +179,16 @@ with(g){
           // we can't use g.AB directly as it's overwritten by another constant during hashing.
           n = ET - 3,
 
-          // Set the coordinates of a big triangle surrounding the canvas (x1=1, y1=x2=n, y2=x3=1, y3=1) as the 2nd param of bD.
+          // Set the coordinates of a big triangle surrounding the canvas (x1=1, y1=x2=B, y2=x3=1, y3=1) as the 2nd param of bD.
           // The coordinates overlap because the "stride" param of vA is set to 1.
           // "Int8Array.of(...)" is similar to "new Int8Array([...])", just shorter. 
           Int8Array.of(
 
             // We call i() a first time to define the fragment shader with the content of the textarea and the real main function (at this moment, g.FN = g.FRAGMENT_SHADER = 36532)
             // it returns x1 = i(`...`) = 1.
-            i(
-              `precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;uniform vec2 iResolution;uniform vec4 iMouse;\n`
-              + c.value
-              + `void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}`
-            ),
+            i(`precision mediump float;uniform float iGlobalTime,iFrame,iDate,iTimeDelta;uniform vec2 iResolution;uniform vec4 iMouse;`
+            +c.value
+            +`void main(){mainImage(gl_FragColor,gl_FragCoord.xy);gl_FragColor.w=1.;}`),
 
             // y1 = x2 = n = 34962
             n,
@@ -205,8 +205,8 @@ with(g){
                 // g.createBuffer
                 cB(
 
-                  // Initialise m (iMouse). m[0] and m[1] are set to 0 as well as o (iGlobaltime), j (iFrame) and d (iTimeDelta)
-                  m = [o = j = d = 0, 0]
+                  // Initialise m (iMouse). m[0] is set to 0 as well as o (iGlobaltime), j (iFrame) and d (iTimeDelta)
+                  m = [o = j = d = 0]
                 )
               )
             ),
@@ -241,44 +241,37 @@ with(g){
     // It's placed here in the oninput() call to save space (no ";" at the end)
     // The ES6 deconstruction ([a,b]=[c,d]) looks longer than separate assignments but it packs better.
     // Mouse coordinates are adjusted to be between 0 and the canvas size
-    a.onmousemove = e =>
+    a.onmousemove = e => {
       y
       ||
       (
         [m[0], m[1]] = [e.pageX * z * a.width / innerWidth, e.pageY * a.height / innerHeight]
       )
+    }
   ),
 
   // Define the loop function "l"
-  // Statements are separated by "|" to avoid {braces}
   (
-    l = e =>
+    l = e => {
+
+      console.log(m);
+      
       
       // At each frame:
       // Update iTimeDelta (time since last frame),
-      uniform1f(gf(p, `iTimeDelta`), d = new Date / 1e3 - f)
-      
-      |
+      uniform1f(gf(p, `iTimeDelta`), d = new Date / 1e3 - f),
 
       // iDate,
-      uniform1f(gf(p, `iDate`), f = new Date / 1e3)
-      
-      |
+      uniform1f(gf(p, `iDate`), f = new Date / 1e3),
 
       // iGlobaltime (time since last input or reload),
-      uniform1f(gf(p, `iGlobalTime`), o += d)
-      
-      |
+      uniform1f(gf(p, `iGlobalTime`), o += d),
 
       // iMouse (mouse coords and click coords between 0 and 1000),
-      uniform4f(gf(p, `iMouse`), m[0], m[1], m[2], m[3])
-      
-      |
+      uniform4f(gf(p, `iMouse`), m[0], m[1], m[2], m[3]),
 
       // iResolution (always 1000 x 1000),
-      uniform2f(gf(p, `iResolution`), a.width, a.height)
-      
-      |
+      uniform2f(gf(p, `iResolution`), a.width, a.height),
 
       // and iFrame (incremented at each frame).
       // uniform1f returns 0, so it replaces the 0 in:
@@ -287,12 +280,11 @@ with(g){
         6,
         uniform1f(gf(p, `iFrame`), j++),
         3
-      )
-      
-      |
+      ),
 
       // Recursive call synced with the screen's refresh rate
       requestAnimationFrame(l)
+    }
   )
 
   // Call l onload to start the loop
@@ -300,15 +292,16 @@ with(g){
 
     // The onclick function updates m.zw (m[2] and m[3]) when the canvas is clicked
     // It's placed here to save space.
-    a.onclick = e =>
+    a.onclick = e => {
       [m[2], m[3]] = [e.pageX * z * a.width / innerWidth, e.pageY * a.height / innerHeight]
+    }
   )
 }
 
 // The ondblclick function updates the style of the canvas (a) and the textarea (c) when the canvas is double-clicked
 // It is also called on load to set their style and the style of the body (b) when the demo starts
 (
-  a.ondblclick = e =>
+  a.ondblclick = e => {
 
     // Define the CSS for a and c
     a.style = c.style = (
@@ -323,17 +316,17 @@ with(g){
 
     // Add "float:left" to a and c to leave no blank space in the page, and avoid scrollbars
     + `%;float:left`
+  }
 )
 (
 
   // The onmousedown function toggles y when the mouse is down (then, y=0) or if the mouse is up (then, y=1).
   // It's placed here to save space.
-  onmousedown = onmouseup = e =>
+  onmousedown = onmouseup = e => {
     y ^= 1
+  }
 )
 
-// Minified: 1577b
+// Minified: 1559b
 // RegPacked with the settings: 2/1/0: 1024b
 // Cheers! <3
-
-</script>
