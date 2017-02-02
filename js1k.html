@@ -38,8 +38,7 @@ The shader inputs have the same name as the ones provided by Shadertoy:
 - uniform float iGlobalTime; // playback time (in seconds)
 - uniform float iTimeDelta;  // render time since last frame (in seconds)
 - uniform int   iFrame;      // playback frame
-- uniform vec4  iMouse;      // xy: mouse coordinates in px (values between 0 and iResolution), if left mouse button is down
-                             // zw: click coordinates (values between 0 and iResolution)
+- uniform vec4  iMouse;      // xy: mouse coordinates in px (values between 0 and iResolution), if left mouse button is down, zw: click coordinates
 - uniform vec4  iDate;       // current timestamp in seconds
 
 ~~~
@@ -92,7 +91,7 @@ a.insertAdjacentHTML(
     ||
 
     // Or the demo (line breaks are written as "\n" for RegPack optimization)
-    `// WebGL playground !\nvoid mainImage(out vec4 color,vec2 coord){\n  vec4 p=vec4(coord/iResolution*2.-1.,0,1);\n  color=p+sin(atan(p.y,p.x)*9.)*sin(p*iGlobalTime/2.+9./dot(p,p)+iGlobalTime*5.);\n}`
+    `// WebGL <3\nvoid mainImage(out vec4 color,vec2 coord){\n  vec4 p=vec4(coord/iResolution*2.-1.,0,1);\n  color=p+sin(atan(p.y,p.x)*9.)*sin(p*iGlobalTime/2.+9./dot(p,p)+iGlobalTime*5.);\n}`
   )
 );
 
