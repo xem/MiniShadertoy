@@ -269,12 +269,12 @@ with(g){
       
       |
 
-      // iMouse (mouse coords and click coords between 0 and 1000),
+      // iMouse (mouse coords and click coords between 0 and iResolution),
       uniform4f(gf(p, `iMouse`), m[0], m[1], m[2], m[3])
       
       |
 
-      // iResolution (always 1000 x 1000),
+      // iResolution,
       uniform2f(gf(p, `iResolution`), a.width, a.height)
       
       |
