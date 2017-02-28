@@ -7,7 +7,7 @@ A tiny webGL shader playground
 
 With a better UI and much better Shadertoy compatibility!
 
-- Commented: http://xem.github.io/MiniShadertoy/js1k.html
+- Commented: http://xem.github.io/MiniShadertoy/js1k.html ([source](https://github.com/xem/MiniShadertoy/blob/gh-pages/js1k.html))
 - Minified: http://xem.github.io/MiniShadertoy/js1k.min.html (1386b)
 - Packed + shim: http://xem.github.io/MiniShadertoy/shim.html (1024b)
 - on JS1k: http://js1k.com/2017-magic/demo/2645
