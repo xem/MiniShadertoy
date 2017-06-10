@@ -139,7 +139,7 @@ with(g){
 
           // define the function i that takes a source string e...
           // (statements are separated by "|" to avoid {braces})
-          i = e =>
+          i = e => {
 
             // ... sets the shader's source (g.shaderSource)...
             sS(
@@ -149,18 +149,26 @@ with(g){
 
               // ... and e...
               e
-            )
-
-            |
+            );
 
             // ... then compiles the shader (g.compileShader)...
-            ce(s)
-
-            |
+            ce(s);
+			
+            // In this commented version only, we add this bunch of code to log shader compilation errors:
+            if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+              g.getShaderInfoLog(s).trim().split("\n").forEach(ss =>
+              console.warn("[shader] " + ss))
+              throw new Error("Error while compiling shader")
+            };
 
             // ... and attaches the shader to p (g.attachShader).
-            // (the following "|" are used to return "1" everytime i is called).
-            !aS(p, s)
+            aS(p, s);
+			
+            // In this commented version we return 1 explicitly, but in the minified version,
+            // all the expressions are separated by "|" and as() is preceded by "!",
+            // which provokes an implicit return of 1 at each call of i.
+            return 1;
+          }
         ),
 
         // 2nd param of vA.
